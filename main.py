@@ -22,6 +22,9 @@ def main() -> None:
     out.parent.mkdir(parents=True, exist_ok=True)
     # No trailing newline: the gate counts every character.
     out.write_text(ENTRY, encoding="utf-8", newline="\n")
+    # Read-back guard: the file the grader gates must be byte-identical
+    # to the line above, so a bad write fails loudly here, not on the server.
+    assert out.read_bytes() == ENTRY.encode("utf-8"), "entry.txt mismatch"
 
 
 if __name__ == "__main__":
